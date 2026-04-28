@@ -1,0 +1,433 @@
+/* ============================================
+   JDIH Pintar - Login Page Styles
+   ============================================ */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-4);
+}
+
+/* ── Animated Background ── */
+.login-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.login-bg::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 20%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 50%, rgba(16, 185, 129, 0.04) 0%, transparent 70%);
+  animation: floatSlow 20s ease-in-out infinite;
+}
+
+.particles-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--accent-cyan);
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleFloat linear infinite;
+}
+
+.particle:nth-child(1) { left: 10%; animation-duration: 15s; animation-delay: 0s; width: 3px; height: 3px; }
+.particle:nth-child(2) { left: 20%; animation-duration: 12s; animation-delay: 2s; width: 5px; height: 5px; background: var(--accent-purple); }
+.particle:nth-child(3) { left: 35%; animation-duration: 18s; animation-delay: 4s; width: 2px; height: 2px; }
+.particle:nth-child(4) { left: 50%; animation-duration: 14s; animation-delay: 1s; width: 4px; height: 4px; background: var(--accent-emerald); }
+.particle:nth-child(5) { left: 65%; animation-duration: 16s; animation-delay: 3s; width: 3px; height: 3px; }
+.particle:nth-child(6) { left: 75%; animation-duration: 13s; animation-delay: 5s; width: 6px; height: 6px; background: var(--accent-purple); }
+.particle:nth-child(7) { left: 85%; animation-duration: 17s; animation-delay: 2s; width: 2px; height: 2px; }
+.particle:nth-child(8) { left: 45%; animation-duration: 20s; animation-delay: 6s; width: 4px; height: 4px; background: var(--accent-cyan); }
+.particle:nth-child(9) { left: 5%; animation-duration: 11s; animation-delay: 1s; width: 5px; height: 5px; background: var(--accent-purple); }
+.particle:nth-child(10) { left: 92%; animation-duration: 19s; animation-delay: 4s; width: 3px; height: 3px; background: var(--accent-emerald); }
+
+/* ── Orbit Rings ── */
+.orbit-ring {
+  position: absolute;
+  border: 1px solid rgba(0, 212, 255, 0.06);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+}
+
+.orbit-ring:nth-child(1) {
+  width: 500px;
+  height: 500px;
+  margin-top: -250px;
+  margin-left: -250px;
+  animation: spin 60s linear infinite;
+}
+
+.orbit-ring:nth-child(2) {
+  width: 700px;
+  height: 700px;
+  margin-top: -350px;
+  margin-left: -350px;
+  border-color: rgba(124, 58, 237, 0.05);
+  animation: spin 80s linear infinite reverse;
+}
+
+.orbit-ring:nth-child(3) {
+  width: 900px;
+  height: 900px;
+  margin-top: -450px;
+  margin-left: -450px;
+  border-color: rgba(16, 185, 129, 0.04);
+  animation: spin 100s linear infinite;
+}
+
+.orbit-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--accent-cyan);
+  border-radius: 50%;
+  top: 0;
+  left: 50%;
+  margin-left: -4px;
+  box-shadow: var(--glow-cyan);
+}
+
+.orbit-ring:nth-child(2) .orbit-dot {
+  background: var(--accent-purple);
+  box-shadow: var(--glow-purple);
+}
+
+/* ── Login Card ── */
+.login-card {
+  position: relative;
+  z-index: var(--z-base);
+  width: 100%;
+  max-width: 440px;
+  padding: var(--space-10);
+  background: rgba(13, 19, 51, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl),
+              0 0 60px rgba(0, 212, 255, 0.05),
+              inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: fadeInScale 0.8s var(--ease-spring) forwards;
+}
+
+.login-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-2xl);
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), transparent 40%, transparent 60%, rgba(124, 58, 237, 0.3));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Logo Section ── */
+.login-logo {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.login-logo-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-4);
+  background: var(--gradient-primary);
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  box-shadow: var(--glow-cyan);
+  animation: float 4s ease-in-out infinite;
+  position: relative;
+}
+
+.login-logo-icon::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: var(--radius-xl);
+  border: 2px solid var(--accent-cyan);
+  opacity: 0.3;
+  animation: pulseRing 2s ease-out infinite;
+}
+
+.login-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  margin-bottom: var(--space-2);
+  letter-spacing: -0.02em;
+}
+
+.login-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.login-subtitle span {
+  color: var(--accent-cyan);
+  font-weight: 500;
+}
+
+/* ── Role Tabs ── */
+.login-roles {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-1);
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-6);
+  border: 1px solid var(--border-subtle);
+}
+
+.role-tab {
+  flex: 1;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.role-tab.active {
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  box-shadow: var(--glow-cyan);
+}
+
+.role-tab:not(.active):hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+.role-tab .role-icon {
+  display: block;
+  font-size: 20px;
+  margin-bottom: var(--space-1);
+}
+
+/* ── Input Group ── */
+.login-input-group {
+  margin-bottom: var(--space-5);
+}
+
+.login-input-label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.login-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-input-wrapper .input-icon {
+  position: absolute;
+  left: var(--space-4);
+  color: var(--text-muted);
+  font-size: 18px;
+  transition: color var(--transition-base);
+  z-index: 1;
+}
+
+.login-input {
+  width: 100%;
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-12);
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  transition: all var(--transition-base);
+}
+
+.login-input:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: var(--glow-cyan), inset 0 0 0 1px rgba(0, 212, 255, 0.1);
+  background: rgba(6, 11, 29, 0.8);
+}
+
+.login-input:focus + .input-icon,
+.login-input:focus ~ .input-icon {
+  color: var(--accent-cyan);
+}
+
+.login-input-wrapper .input-icon-left {
+  position: absolute;
+  left: var(--space-4);
+  color: var(--text-muted);
+  font-size: 18px;
+  transition: color var(--transition-base);
+}
+
+.toggle-password {
+  position: absolute;
+  right: var(--space-4);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  padding: var(--space-2);
+  transition: color var(--transition-fast);
+  z-index: 1;
+}
+
+.toggle-password:hover {
+  color: var(--accent-cyan);
+}
+
+/* ── Login Button ── */
+.login-btn {
+  width: 100%;
+  padding: var(--space-4);
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-base);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+  border: none;
+  letter-spacing: 0.02em;
+}
+
+.login-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow-cyan-strong);
+}
+
+.login-btn:hover::before {
+  opacity: 1;
+}
+
+.login-btn:active {
+  transform: translateY(0);
+}
+
+.login-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-btn .btn-loader {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin: 0 auto;
+}
+
+.login-btn.loading .btn-text {
+  display: none;
+}
+
+.login-btn.loading .btn-loader {
+  display: block;
+}
+
+/* ── Error Message ── */
+.login-error {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--accent-rose-dim);
+  border: 1px solid rgba(244, 63, 94, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--accent-rose);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-4);
+  animation: fadeInScale 0.3s var(--ease-spring);
+}
+
+.login-error.show {
+  display: flex;
+}
+
+/* ── Footer ── */
+.login-footer {
+  text-align: center;
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.login-footer p {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.login-footer .designer {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.login-footer .designer span {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+/* ── Version Badge ── */
+.login-version {
+  position: fixed;
+  bottom: var(--space-4);
+  right: var(--space-4);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  opacity: 0.5;
+  z-index: 1;
+}

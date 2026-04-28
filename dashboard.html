@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kamus Praturan Pintar - Dashboard Pusat Data Hukum Cerdas By Abang AL">
+  <meta name="theme-color" content="#060b1d">
+  <title>Kamus Praturan Pintar — Dashboard</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/search.css">
+  <link rel="stylesheet" href="css/ai-chat.css">
+  <link rel="stylesheet" href="css/hierarchy.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
+</head>
+<body>
+  <div class="dashboard-page" id="dashboardPage">
+
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">⚖️</div>
+        <div class="sidebar-brand">
+          <h2>Kamus Praturan</h2>
+          <p>By Abang AL</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebarNav">
+        <div class="nav-section-label">Menu Utama</div>
+        <button class="nav-item active" data-view="home" id="navHome">
+          <span class="nav-icon">🏠</span> Beranda
+        </button>
+        <button class="nav-item" data-view="search" id="navSearch">
+          <span class="nav-icon">🔍</span> Pencarian
+        </button>
+        <button class="nav-item" data-view="ai" id="navAI">
+          <span class="nav-icon">🤖</span> AI Assistant
+        </button>
+        <button class="nav-item" data-view="hierarchy" id="navHierarchy">
+          <span class="nav-icon">📊</span> Hierarki Peraturan
+        </button>
+        <button class="nav-item" data-view="history" id="navHistory">
+          <span class="nav-icon">📜</span> Riwayat
+        </button>
+
+        <div class="nav-section-label admin-only-label" style="display:none;">Admin</div>
+        <button class="nav-item admin-only" data-view="upload" id="navUpload">
+          <span class="nav-icon">📤</span> Upload Dokumen
+        </button>
+        <button class="nav-item admin-only" data-view="manage" id="navManage">
+          <span class="nav-icon">⚙️</span> Kelola Data
+        </button>
+        <button class="nav-item admin-only" data-view="drive" id="navDrive">
+          <span class="nav-icon">☁️</span> Google Drive
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-user-avatar" id="userAvatar">🛡️</div>
+          <div class="sidebar-user-info">
+            <div class="name" id="userName">Admin</div>
+            <div class="role" id="userRole">Administrator</div>
+          </div>
+          <button class="btn-logout" id="btnLogout" title="Logout">🚪</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="main-header">
+        <div class="header-left">
+          <h1 class="header-title" id="headerTitle">Beranda</h1>
+        </div>
+        <div class="header-right">
+          <div class="sync-status">
+            <div class="sync-dot"></div>
+            <span>Tersinkronisasi</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <!-- ========== HOME VIEW ========== -->
+        <section class="view-section active" id="viewHome">
+          <div class="quick-search-hero">
+            <h2 class="gradient-text">Cari Peraturan Hukum</h2>
+            <p>Temukan Perda, UU, PP, dan dokumen hukum lainnya secara instan</p>
+            <div class="quick-search-bar">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="quickSearchInput" placeholder='Cari kata kunci, misal "retribusi", "naskah dinas"...'>
+            </div>
+            <div class="quick-search-tags" id="quickSearchTags"></div>
+          </div>
+
+          <div class="stats-grid" id="statsGrid"></div>
+
+          <div class="dashboard-panels">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>📈 Distribusi Dokumen</h3>
+              </div>
+              <div class="panel-body">
+                <div class="category-bars" id="categoryBars"></div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <h3>📄 Dokumen Terbaru</h3>
+              </div>
+              <div class="panel-body">
+                <div class="recent-doc-list" id="recentDocs"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== SEARCH VIEW ========== -->
+        <section class="view-section" id="viewSearch">
+          <div class="search-container">
+            <h2 class="section-title gradient-text">🔍 Pencarian Dokumen</h2>
+            <p class="section-desc">Cari di seluruh isi dokumen hukum dengan teknologi full-text search</p>
+            <div class="search-bar-wrapper">
+              <div class="search-bar-main">
+                <span class="search-input-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Ketik kata kunci pencarian...">
+                <button class="search-submit" id="searchBtn">Cari</button>
+              </div>
+            </div>
+            <div class="search-filters" id="searchFilters"></div>
+            <div id="searchResultsArea"></div>
+          </div>
+        </section>
+
+        <!-- ========== AI CHAT VIEW ========== -->
+        <section class="view-section" id="viewAI">
+          <div class="ai-chat-container">
+            <div class="ai-chat-header">
+              <div class="ai-avatar">🤖</div>
+              <h3>AI Assistant Hukum</h3>
+              <p>Tanyakan apa saja tentang peraturan daerah & hukum</p>
+            </div>
+            <div class="ai-suggestions" id="aiSuggestions"></div>
+            <div class="ai-messages" id="aiMessages"></div>
+            <div class="ai-typing" id="aiTyping">
+              <div class="ai-msg-avatar" style="background:var(--gradient-primary);width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;">🤖</div>
+              <div class="ai-typing-dots"><span></span><span></span><span></span></div>
+            </div>
+            <div class="ai-chat-input">
+              <input type="text" id="aiInput" placeholder="Tanya tentang peraturan hukum...">
+              <button class="ai-chat-send" id="aiSendBtn">➤</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== HIERARCHY VIEW ========== -->
+        <section class="view-section" id="viewHierarchy">
+          <div class="hierarchy-container">
+            <h2 class="section-title gradient-text">📊 Hierarki Peraturan</h2>
+            <p class="section-desc">Struktur peraturan perundang-undangan dari tingkat tertinggi hingga terendah</p>
+            <div class="hierarchy-visual" id="hierarchyTree"></div>
+          </div>
+        </section>
+
+        <!-- ========== HISTORY VIEW ========== -->
+        <section class="view-section" id="viewHistory">
+          <div class="history-container">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-6);">
+              <div>
+                <h2 class="section-title gradient-text">📜 Riwayat Pencarian</h2>
+                <p class="section-desc" style="margin-bottom:0;">Pencarian terakhir Anda</p>
+              </div>
+              <button class="btn-secondary" id="clearHistoryBtn">🗑️ Hapus Semua</button>
+            </div>
+            <div class="history-list" id="historyList"></div>
+          </div>
+        </section>
+
+        <!-- ========== UPLOAD VIEW (Admin) ========== -->
+        <section class="view-section" id="viewUpload">
+          <div class="upload-container">
+            <h2 class="section-title gradient-text">📤 Upload Dokumen</h2>
+            <p class="section-desc">Upload dokumen hukum ke Google Drive secara otomatis</p>
+            <div class="upload-zone" id="uploadZone">
+              <div class="upload-zone-icon">📁</div>
+              <h3>Drag & Drop File</h3>
+              <p>atau klik untuk memilih file</p>
+              <button class="browse-btn" type="button">Pilih File</button>
+              <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.jpg,.png" style="display:none;">
+            </div>
+            <div class="upload-file-list" id="uploadFileList"></div>
+            <div class="upload-form" id="uploadForm" style="display:none;">
+              <div class="upload-form-group">
+                <label>Kategori Peraturan</label>
+                <select id="uploadCategory"></select>
+              </div>
+              <div class="upload-form-group">
+                <label>Judul Dokumen (opsional)</label>
+                <input type="text" id="uploadTitle" placeholder="Akan menggunakan nama file jika kosong">
+              </div>
+              <button class="btn-primary" id="uploadSubmitBtn" style="width:100%;padding:var(--space-4);">📤 Upload ke Google Drive</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== MANAGE VIEW (Admin) ========== -->
+        <section class="view-section" id="viewManage">
+          <div class="manage-container">
+            <h2 class="section-title gradient-text">⚙️ Kelola Data</h2>
+            <p class="section-desc">Tambah, edit, atau hapus dokumen hukum</p>
+            <div class="manage-toolbar">
+              <button class="btn-primary" id="addDocBtn">➕ Tambah Dokumen</button>
+              <div style="display:flex;gap:var(--space-2);">
+                <input type="text" id="manageSearchInput" placeholder="Cari dokumen..." style="padding:var(--space-3) var(--space-4);background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:var(--text-sm);width:250px;">
+              </div>
+            </div>
+            <div class="manage-table-wrap">
+              <table class="manage-table">
+                <thead>
+                  <tr>
+                    <th>No</th><th>Judul</th><th>Kategori</th><th>Tahun</th><th>Status</th><th>OCR</th><th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="manageTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== DRIVE VIEW (Admin) ========== -->
+        <section class="view-section" id="viewDrive">
+          <div style="max-width:900px;margin:0 auto;">
+            <h2 class="section-title gradient-text">☁️ Google Drive Sync</h2>
+            <p class="section-desc">Status sinkronisasi dengan folder Google Drive "Praturan"</p>
+            <div class="glass-card" style="padding:var(--space-8);text-align:center;">
+              <div style="font-size:64px;margin-bottom:var(--space-4);">☁️</div>
+              <h3 style="margin-bottom:var(--space-4);">Google Drive Terhubung</h3>
+              <p style="margin-bottom:var(--space-6);">Folder: <strong style="color:var(--accent-cyan);">Praturan</strong></p>
+              <div style="display:flex;gap:var(--space-4);justify-content:center;flex-wrap:wrap;">
+                <div class="stat-card cyan" style="flex:1;min-width:150px;">
+                  <div class="stat-card-value" id="driveTotalFiles">25</div>
+                  <div class="stat-card-label">Total File</div>
+                </div>
+                <div class="stat-card emerald" style="flex:1;min-width:150px;">
+                  <div class="stat-card-value" id="driveOcrDone">22</div>
+                  <div class="stat-card-label">OCR Selesai</div>
+                </div>
+                <div class="stat-card amber" style="flex:1;min-width:150px;">
+                  <div class="stat-card-value" id="driveOcrPending">3</div>
+                  <div class="stat-card-label">OCR Pending</div>
+                </div>
+              </div>
+              <div style="margin-top:var(--space-6);">
+                <a href="https://drive.google.com/drive/folders/107J1Zmlhb0-Ba9u2ActNRkEgzjs9tKWl" target="_blank" class="btn-primary" style="text-decoration:none;">📂 Buka Google Drive</a>
+              </div>
+              <p style="margin-top:var(--space-4);font-size:var(--text-xs);color:var(--text-muted);">Perubahan di Drive akan otomatis tersinkronisasi saat API Key dikonfigurasi</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="dashboard-footer">
+        Kamus Praturan Pintar © 2025 — Design by <span>Abang AL</span>
+      </footer>
+    </main>
+
+    <!-- Document Detail Modal -->
+    <div class="doc-modal-overlay" id="docModal">
+      <div class="doc-modal">
+        <div class="doc-modal-header">
+          <h3 id="modalTitle"></h3>
+          <button class="doc-modal-close" id="modalClose">✕</button>
+        </div>
+        <div class="doc-modal-body">
+          <div class="doc-modal-meta" id="modalMeta"></div>
+          <div class="doc-modal-content" id="modalContent"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/mock-data.js"></script>
+  <script src="js/drive-api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/search-engine.js"></script>
+  <script src="js/ai-assistant.js"></script>
+  <script src="js/hierarchy.js"></script>
+  <script src="js/upload.js"></script>
+  <script src="js/dashboard-stats.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/data-manager.js"></script>
+</body>
+</html>
