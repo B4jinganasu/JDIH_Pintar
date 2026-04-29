@@ -82,9 +82,9 @@
           <h1 class="header-title" id="headerTitle">Beranda</h1>
         </div>
         <div class="header-right">
-          <div class="sync-status">
-            <div class="sync-dot"></div>
-            <span>Tersinkronisasi</span>
+          <div class="sync-status" id="syncStatusBar">
+            <div class="sync-dot" id="syncDot"></div>
+            <span id="syncStatusText">Memuat...</span>
           </div>
         </div>
       </header>
@@ -291,10 +291,11 @@
 
   </div>
 
+  <!-- URUTAN PENTING: mock-data → search-engine (SYNONYM_MAP) → drive-api → app -->
   <script src="js/mock-data.js"></script>
+  <script src="js/search-engine.js"></script>
   <script src="js/drive-api.js"></script>
   <script src="js/app.js"></script>
-  <script src="js/search-engine.js"></script>
   <script src="js/ai-assistant.js"></script>
   <script src="js/hierarchy.js"></script>
   <script src="js/upload.js"></script>

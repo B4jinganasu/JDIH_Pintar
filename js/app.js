@@ -32,20 +32,37 @@ const App = {
 
     // Then load real data from Google Drive
     try {
+      // Animasikan dot saat loading
+      const dot = document.getElementById('syncDot');
+      if (dot) dot.style.background = '#f59e0b'; // Kuning = sedang loading
+
       await DriveAPI.init();
-      // Re-initialize modules with real Drive data
+
+      // Re-initialize modules dengan data Drive yang sudah lengkap
       DashboardStats.init();
       SearchEngine.renderFilters();
       HierarchyView.render();
       if (this.isAdmin) DataManager.renderTable();
-      // Update drive stats
-      document.getElementById('driveTotalFiles').textContent = DriveAPI.allFiles.length;
+
+      // Update statistik Drive
+      const total = DriveAPI.allFiles.length;
       const ocrDone = DriveAPI.allFiles.filter(f => f.ocrStatus === 'processed').length;
+      document.getElementById('driveTotalFiles').textContent = total;
       document.getElementById('driveOcrDone').textContent = ocrDone;
-      document.getElementById('driveOcrPending').textContent = DriveAPI.allFiles.length - ocrDone;
+      document.getElementById('driveOcrPending').textContent = total - ocrDone;
+
+      // Dot hijau = sukses
+      if (dot) dot.style.background = '';
+      const statusText = document.getElementById('syncStatusText');
+      if (statusText) statusText.textContent = `✅ ${total} dokumen tersinkronisasi`;
+
       console.log('[App] Drive data loaded and UI refreshed');
     } catch (err) {
       console.warn('[App] Drive API failed, using mock data:', err);
+      const dot = document.getElementById('syncDot');
+      if (dot) dot.style.background = '#ef4444'; // Merah = error
+      const statusText = document.getElementById('syncStatusText');
+      if (statusText) statusText.textContent = '⚠️ Gagal terhubung Drive';
     }
   },
 
