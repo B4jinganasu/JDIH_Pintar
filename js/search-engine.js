@@ -1,5 +1,6 @@
 /* ============================================
    JDIH Pintar - Full-Text Search Engine
+   + Legal Knowledge Panel Integration
    ============================================ */
 
 const SearchEngine = {
@@ -49,30 +50,121 @@ const SearchEngine = {
     if (this.activeFilter !== 'all') {
       docs = docs.filter(d => d.category === this.activeFilter);
     }
-
     const scored = docs.map(doc => {
       let score = 0;
       const searchable = (doc.title + ' ' + doc.content + ' ' + doc.tags.join(' ')).toLowerCase();
       terms.forEach(term => {
-        // Title match (high weight)
         const titleLower = doc.title.toLowerCase();
         if (titleLower.includes(term)) score += 10;
-        // Content match
         const contentLower = doc.content.toLowerCase();
         const contentMatches = (contentLower.match(new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length;
         score += contentMatches * 3;
-        // Tag match
         if (doc.tags.some(t => t.includes(term))) score += 5;
       });
       return { doc, score };
     }).filter(r => r.score > 0).sort((a, b) => b.score - a.score);
-
     return scored;
   },
 
+  /* =============================================
+     KNOWLEDGE PANEL — Info Pasal Terkait
+     ============================================= */
+  renderKnowledgePanel(topics) {
+    if (!topics || topics.length === 0) return '';
+
+    let html = '';
+
+    // Tabs jika multi topik
+    if (topics.length > 1) {
+      html += '<div class="lk-topics-tabs">';
+      topics.forEach((t, i) => {
+        html += `<button class="lk-topic-tab ${i === 0 ? 'active' : ''}" onclick="SearchEngine.switchKnowledgeTopic(${i})">${t.icon} ${t.title}</button>`;
+      });
+      html += '</div>';
+    }
+
+    topics.forEach((topic, idx) => {
+      html += `<div class="legal-knowledge-panel lk-topic-panel" id="lkPanel${idx}" style="${idx > 0 ? 'display:none;' : ''}">`;
+
+      // Header
+      const statusClass = topic.statusBerlaku !== false ? 'lk-status-aktif' : 'lk-status-dicabut';
+      const statusText = topic.statusBerlaku !== false ? '✅ BERLAKU' : '❌ DICABUT';
+      html += `<div class="lk-header">
+        <div class="lk-icon">${topic.icon}</div>
+        <div class="lk-title-group">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <h4 class="lk-title">${topic.title}</h4>
+            <span class="lk-badge">INFO PASAL</span>
+            <span class="lk-status ${statusClass}">${statusText}</span>
+          </div>
+          <p class="lk-summary">${topic.summary}</p>
+        </div>
+      </div>`;
+
+      // Jenis-jenis
+      if (topic.jenis && topic.jenis.length > 0) {
+        html += `<div class="lk-section">
+          <div class="lk-section-title" style="color:var(--accent-purple);">📌 Jenis-jenis</div>
+          <div class="lk-jenis-list">${topic.jenis.map(j => `<span class="lk-jenis-tag">${j}</span>`).join('')}</div>
+        </div>`;
+      }
+
+      // Dasar Hukum
+      if (topic.dasarHukum && topic.dasarHukum.length > 0) {
+        html += `<div class="lk-section">
+          <div class="lk-section-title" style="color:var(--accent-cyan);">📖 Dasar Hukum</div>
+          <div class="lk-dasar-list">${topic.dasarHukum.map(d =>
+            `<div class="lk-dasar-item">• <strong>${d.peraturan}</strong>${d.pasal ? ' — ' + d.pasal : ''}</div>`
+          ).join('')}</div>
+        </div>`;
+      }
+
+      // Pasal-pasal — kelompokkan per tipe
+      const tipeOrder = ['sanksi', 'larangan', 'kewajiban', 'ketentuan'];
+      const tipeLabels = { sanksi: '⚖️ Sanksi', larangan: '🚫 Larangan', kewajiban: '📋 Kewajiban', ketentuan: '📝 Ketentuan Umum' };
+
+      tipeOrder.forEach(tipe => {
+        const items = topic.pasals.filter(p => p.tipe === tipe);
+        if (items.length === 0) return;
+        html += `<div class="lk-section">
+          <div class="lk-section-title">${tipeLabels[tipe] || tipe}</div>
+          <div class="lk-pasals">`;
+        items.forEach(p => {
+          html += `<div class="lk-pasal-card">
+            <div class="lk-tipe-badge lk-tipe-${p.tipe}">${p.tipe.toUpperCase()}</div>
+            <div class="lk-pasal-ref">${p.ref}</div>
+            <div class="lk-pasal-isi">${p.isi}</div>
+          </div>`;
+        });
+        html += '</div></div>';
+      });
+
+      html += '</div>'; // close panel
+    });
+
+    return html;
+  },
+
+  switchKnowledgeTopic(index) {
+    document.querySelectorAll('.lk-topic-panel').forEach((el, i) => {
+      el.style.display = i === index ? '' : 'none';
+    });
+    document.querySelectorAll('.lk-topic-tab').forEach((tab, i) => {
+      tab.classList.toggle('active', i === index);
+    });
+  },
+
+  /* =============================================
+     RENDER RESULTS + KNOWLEDGE PANEL
+     ============================================= */
   renderResults(results, query) {
     const area = document.getElementById('searchResultsArea');
-    if (results.length === 0) {
+
+    // Knowledge Panel
+    const topics = (typeof searchLegalKnowledge === 'function') ? searchLegalKnowledge(query) : [];
+    const panelHtml = this.renderKnowledgePanel(topics);
+
+    if (results.length === 0 && topics.length === 0) {
       area.innerHTML = `
         <div class="search-empty">
           <div class="search-empty-icon">🔍</div>
@@ -82,7 +174,15 @@ const SearchEngine = {
       return;
     }
 
-    let html = `
+    if (results.length === 0) {
+      area.innerHTML = panelHtml + `
+        <div class="search-empty" style="padding:var(--space-8) 0;">
+          <p style="color:var(--text-muted);font-size:var(--text-sm);">📄 Tidak ada dokumen yang cocok, tetapi ditemukan info pasal terkait di atas.</p>
+        </div>`;
+      return;
+    }
+
+    let html = panelHtml + `
       <div class="search-results-header">
         <div class="search-results-count">Ditemukan <strong>${results.length}</strong> dokumen untuk "<strong>${query}</strong>"</div>
       </div>
