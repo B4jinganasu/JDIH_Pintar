@@ -198,3 +198,77 @@
   background: var(--accent-cyan-dim);
   border-color: var(--accent-cyan);
 }
+
+/* ── Streaming Cursor ── */
+.ai-cursor-blink {
+  animation: cursorBlink 1s step-end infinite;
+  color: var(--accent-cyan);
+  font-weight: 300;
+}
+
+@keyframes cursorBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.ai-streaming {
+  min-height: 24px;
+}
+
+/* ── Markdown in Chat ── */
+.ai-msg-bubble p { margin: 0 0 8px 0; }
+.ai-msg-bubble p:last-child { margin-bottom: 0; }
+
+.ai-msg-bubble h4.ai-md-h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  margin: 14px 0 6px 0;
+  font-family: var(--font-heading);
+}
+
+.ai-msg-bubble h5.ai-md-h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-purple);
+  margin: 10px 0 4px 0;
+  font-family: var(--font-heading);
+}
+
+.ai-msg-bubble strong {
+  color: var(--text-white);
+  font-weight: 600;
+}
+
+.ai-msg-bubble em {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.ai-msg-bubble ul.ai-md-ul,
+.ai-msg-bubble ol.ai-md-ol {
+  margin: 6px 0;
+  padding-left: 20px;
+}
+
+.ai-msg-bubble li.ai-md-li,
+.ai-msg-bubble li.ai-md-oli {
+  margin-bottom: 4px;
+  line-height: 1.6;
+}
+
+.ai-msg-bubble code.ai-md-code {
+  background: rgba(0, 212, 255, 0.1);
+  color: var(--accent-cyan);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.ai-msg-bubble mark {
+  background: rgba(245, 158, 11, 0.25);
+  color: var(--accent-amber);
+  padding: 1px 3px;
+  border-radius: 3px;
+}
