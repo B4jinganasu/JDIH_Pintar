@@ -4,7 +4,8 @@
    ============================================ */
 
 const AIAssistant = {
-  GEMINI_API_KEY: 'AIzaSyAbLu7ffYOYLdTq97YUtAxmZqQBo0jv5r4',
+  // API Key sekarang tersimpan aman di Cloudflare Worker (tidak di frontend)
+  PROXY_URL: 'https://summer-unit-4713.aldino-1414.workers.dev/',
   GEMINI_MODEL: 'gemini-2.5-flash',
   isStreaming: false,
   chatHistory: [],
@@ -130,8 +131,6 @@ FORMAT JAWABAN:
 - Jelaskan detail berdasarkan data
 - Akhiri dengan sumber referensi menggunakan format: 📎 **Sumber:** [daftar peraturan]`;
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${this.GEMINI_MODEL}:streamGenerateContent?alt=sse&key=${this.GEMINI_API_KEY}`;
-
     // Build conversation with context
     const contents = [];
 
@@ -155,6 +154,7 @@ FORMAT JAWABAN:
     });
 
     const body = {
+      model: this.GEMINI_MODEL,
       contents,
       systemInstruction: {
         parts: [{ text: systemPrompt }]
@@ -168,7 +168,7 @@ FORMAT JAWABAN:
       }
     };
 
-    const response = await fetch(url, {
+    const response = await fetch(this.PROXY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
